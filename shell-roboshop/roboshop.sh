@@ -5,10 +5,9 @@ AMI_ID="ami-09c813fb71547fc4f"
 SG_ID="sg-08671a7014cce6627"
 ZONE_ID="Z0883062RHMIRSI7AY3N"
 DOMAIN_NAME="dawsdevops86.fun"
-
 for instance in $@ # mongodb redis mysql
 do
-    INSTANCE_ID=$(aws ec2 run-instance --image-id $AMI_ID --instance-type t3.micro --security group-ids $SG_ID --tag-specifications "ResourceType = instance,Tags=[{key-Name,Value=$instance}]" --query 'Instances[0].InstanceId' --output text)
+    INSTANCE_ID=$(aws ec2 run-instances --image-id $AMI_ID --instance-type t3.micro --security group-ids $SG_ID --tag-specifications "ResourceType = instance,Tags=[{key-Name,Value=$instance}]" --query 'Instances[0].InstanceId' --output text)
 
 
      # Get Private IP 
@@ -26,7 +25,7 @@ do
          
 
     aws route53 change-resource-record-sets \
-  --hosted-zone-id Z0883062RHMIRSI7AY3N \
+  --hosted-zone-id $ZONE_ID \
   --change-batch '
   {
     "Comment": "updating record set"
