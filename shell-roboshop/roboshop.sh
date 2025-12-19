@@ -17,7 +17,7 @@ do
 
     else
          IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instance[0].publicIPAddress' --output text)
-         RECORD_NAME= "$instance.$DOMAIN_NAME" # dawsdevops86.fun
+         RECORD_NAME="$instance.$DOMAIN_NAME" # dawsdevops86.fun
 
     fi
 
@@ -28,9 +28,9 @@ do
     --hosted-zone-id $ZONE_ID \
     --change-batch '
     {
-        "Comment": "Creating record set"
+        "Comment": "Updating record set"
         ,"Changes": [{
-        "Action"              : "CREATE"
+        "Action"              : "UPSERT"
         ,"ResourceRecordSet"  : {
             "Name"              : "'$RECORD_NAME'"
             ,"Type"             : "A"
