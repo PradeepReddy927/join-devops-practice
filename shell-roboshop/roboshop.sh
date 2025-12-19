@@ -11,17 +11,17 @@ do
 
 
      # Get Private IP 
-     if [ $instance != "frontend" ];then
+    if [ $instance != "frontend" ];then
          IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].privateIPAddress' --output text)
          RECORD_NAME="$instance.$DOMAIN_NAME" # mongodb.dawsdevops86.fun
 
-     else
+    else
          IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instance[0].publicIPAddress' --output text)
          RECORD_NAME= "$instance.$DOMAIN_NAME" # dawsdevops86.fun
 
-     fi
+    fi
 
-    echo "$instance:$IP"
+    echo "$instance: $IP"
          
 
     aws route53 change-resource-record-sets \
