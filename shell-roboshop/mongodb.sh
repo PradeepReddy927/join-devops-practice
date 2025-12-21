@@ -22,7 +22,7 @@ fi
 
 
 VALIDATE(){ # functions receive inputs through args just like shell script args 
-    if [ $USERID -ne 0 ]; then
+    if [ $1 -ne 0 ]; then
        echo -e "$2 ... $R FAILURE $N" | tee -a $LOG_FILE
        exit 1
     else
@@ -33,13 +33,13 @@ VALIDATE(){ # functions receive inputs through args just like shell script args
 cp mongo.repo /etc/yum.repos.d/mongo.repo
 VALIDATE $? "Adding Mongo repo"
 
-dnf install mongodb-org -y &>> $LOGS_FOLDER
+dnf install mongodb-org -y &>> $LOG_FILE
 VALIDATE $? "Installing MongoDB"
 
-systemctl enable mongod &>> $LOGS_FOLDER
+systemctl enable mongod &>> $LOG_FILE
 VALIDATE $? "Enable MongoDB"
 
-systemctl start mongodb
+systemctl start mongod
 VALIDATE $? "Start MongoDB"
 
 sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf
